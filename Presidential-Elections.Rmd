@@ -1,6 +1,6 @@
 ---
 title: "Choropleth map of US states median income in 2010 "
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
