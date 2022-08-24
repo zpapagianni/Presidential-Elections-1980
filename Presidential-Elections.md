@@ -17,4 +17,23 @@ Once we have the coordinates for the boundaries of our spatial regions,
 we can match this to the values of our spatial variable of interest
 using one of the ‘mutating joins’ from the dplyr library.
 
+``` r
+##Choropleth map
+states_data<-us_states_df %>% select(state,median_income_10)
+states_data$state<-tolower(states_data$state)
+##States
+states_map <- map_data("state")
+fact_join <- states_map %>% left_join(states_data, by=c('region'='state'))
+#Visualise 
+ggplot(fact_join, aes(long, lat, group = group))+
+  geom_polygon(aes(fill = `median_income_10`), color = "white")+ theme_void()+
+  scale_fill_viridis(breaks=c(36000,34000,32000,30000,28000,26000,24000,22000,20000),
+                     guide = guide_legend(label.position = "right",title = 'Median Income', title.position = 'top', nrow=8))+
+  labs(title = "State-level median income across the United States",subtitle = "Reported in 2010") +
+    theme(text = element_text(color = "#22211d"),
+          legend.background = element_rect(fill = "#f5f5f2", color = NA),
+          plot.title = element_text(size= 14, hjust=0.01, color = "#4e4d47",
+                                    margin = margin(b = -0.1, t = 0.4, l = 2, unit = "cm")))
+```
+
 <img src="Presidential-Elections_files/figure-gfm/unnamed-chunk-1-1.png" width="70%" />
